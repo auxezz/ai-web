@@ -1,0 +1,209 @@
+/* Color variables - reusable colors for the whole page */
+:root { /* acts as system variable's path, providing global color definitions. in short, it's defining colors to be used throughout the CSS */
+  --bg: #0b0b14;
+  --panel: #12121b;
+  --pink: #ff4db8;
+  --accent: rgba(255, 77, 184, 0.12);
+  --text: #e6e6ff;
+}
+
+/* Reset default styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Main page background */
+body {
+  background: radial-gradient(circle at top left, #0b0f1c, var(--bg));
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+/* Main chat container */
+.chat-root {
+  width: 100%;
+  max-width: 920px;
+  height: 86vh;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.06));
+  border-radius: 12px;
+  border: 1px solid rgba(255, 77, 184, 0.12);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 77, 184, 0.04);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Chat header (title area) */
+.chat-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 77, 184, 0.03);
+  background: linear-gradient(0deg, transparent, rgba(255, 77, 184, 0.01));
+}
+
+.chat-header h1 {
+  margin: 0;
+  color: var(--pink);
+  font-size: 18px;
+  letter-spacing: 0.6px;
+}
+
+.subtitle {
+  margin: 2px 0 0 0;
+  font-size: 12px;
+  color: #9fb7d6;
+}
+
+/* Chat box (scrollable message area) */
+.chat-box {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-image: radial-gradient(circle at 80% 10%, rgba(255, 77, 184, 0.02), transparent 12%);
+}
+
+/* Message bubbles (base style) */
+.msg {
+  max-width: 86%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+/* User messages (left side, pink) */
+.msg.user {
+  align-self: flex-start;
+  background: linear-gradient(180deg, rgba(255, 77, 184, 0.06), rgba(255, 77, 184, 0.03));
+  border: 1px solid rgba(255, 77, 184, 0.12);
+  color: #ffd9f0;
+  font-weight: 600;
+}
+
+/* AI messages (right side, blue) */
+.msg.ai {
+  align-self: flex-end;
+  background: #0f1530;
+  border: 1px solid rgba(180, 190, 255, 0.06);
+  color: #cfe1ff;
+}
+
+/* Info messages (center, gray) */
+.msg.info {
+  align-self: center;
+  background: transparent;
+  color: #9bb0c9;
+  font-size: 12px;
+}
+
+/* Input area at the bottom */
+.input-area {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid rgba(255, 77, 184, 0.03);
+  gap: 8px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.01), transparent);
+}
+
+/* Text input field */
+#userInput {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 77, 184, 0.12);
+  background: var(--panel);
+  color: var(--text);
+  outline: none;
+  font-size: 14px;
+}
+
+/* Input field when clicked */
+#userInput:focus {
+  box-shadow: 0 0 10px rgba(255, 77, 184, 0.08);
+}
+
+/* Send button */
+#sendButton {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, var(--pink), #ff77c5);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Send button when clicked */
+#sendButton:active {
+  transform: translateY(1px);
+}
+
+/* Clear History button */
+#clearButton {
+  margin-left: 8px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  background: #ffe0e0;
+  color: #333;
+  border: 1px solid #fbb;
+  cursor: pointer;
+}
+
+/* Footer text */
+.chat-footer {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #9fb7d6;
+  border-top: 1px solid rgba(255, 77, 184, 0.02);
+}
+
+/* Scrollbar width */
+.chat-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar handle */
+.chat-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 77, 184, 0.12);
+  border-radius: 8px;
+}
+
+/* Neuro character in bottom-right corner */
+#neuro-corner {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 96px;
+  image-rendering: pixelated;
+  z-index: 1000;
+  filter: drop-shadow(0 0 4px #ff66cc);
+}
+
+/* Bobbing animation when Neuro is talking */
+#neuro-corner.talking {
+  animation: neuro-bob 0.4s ease-in-out infinite !important;
+}
+
+/* Animation that makes Neuro bounce up and down when speaking */
+@keyframes neuro-bob {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
