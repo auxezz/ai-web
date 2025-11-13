@@ -11,6 +11,18 @@
     <header class="chat-header">
       <h1>Neuro</h1>
       <p class="subtitle">Local AI - Neuro Prosjekt</p>
+      <div class="model-switch">
+        <label class="switch-label">
+          <span class="model-option">Local Model</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="modelToggle">
+            <span class="slider"></span>
+          </label>
+          <span class="model-option">Gemini API</span>
+        </label>
+        <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key" style="display:none;" />
+        <button id="saveApiKey" style="display:none;">Save Key</button>
+      </div>
     </header>
 
     <main id="chatBox" class="chat-box" aria-live="polite"></main>
