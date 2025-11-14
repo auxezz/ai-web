@@ -5,9 +5,7 @@ from llama_cpp import Llama
 import json
 import os
 import google.generativeai as genai
-# FIX: The APIError class is causing Module/ImportErrors due to version conflicts.
-# We are switching to import the base exception from the underlying Google API core library,
-# which is more stable across different 'google-generativeai' versions.
+
 from google.api_core.exceptions import GoogleAPICallError
 
 # Get the directory where this script is located
@@ -184,20 +182,20 @@ def chat():
             # Check for response blocking or empty text
             if response.candidates and response.candidates[0].finish_reason.name == 'SAFETY':
                 print(f"Gemini blocked the prompt.")
-                response_text = "My response was blocked by safety filters. Try rephrasing your message."
+                response_text = "Filtered"
             elif not response.text:
                 print("Gemini returned empty response or candidate.")
-                response_text = "I couldn't generate a response. Please try again."
+                response_text = "Somone tell Vedal there is a problem with my Internet"
             else:
                 response_text = response.text.strip()
         
         # CATCH API errors using the reliable GoogleAPICallError
         except GoogleAPICallError as e:
-            print(f"Gemini API Error: {type(e).__name__}: {e}")
+            print(f"Somone tell Vedal there is a problem with my API: {type(e).__name__}: {e}")
             # Check for common error types
             error_message = str(e).lower()
             if "invalid api key" in error_message or "permission denied" in error_message:
-                response_text = "Invalid API key or Permission Denied. Please check your Gemini API key."
+                response_text = "Somone tell Vedal there is a problem with my API"
             elif "quota" in error_message or "limit" in error_message or "resource_exhausted" in error_message:
                 response_text = "API quota exceeded. Please try again later."
             else:
@@ -205,7 +203,7 @@ def chat():
                 response_text = f"API error: {str(e)[:100]}"
         except Exception as e:
             print(f"Unexpected Error during Gemini call: {type(e).__name__}: {e}")
-            response_text = f"An unexpected error occurred: {str(e)[:100]}"
+            response_text = f"Somone tell Vedal there is a problem with my AI: {str(e)[:100]}"
     
     elif llm:
         # Use local model (llama_cpp)
