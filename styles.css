@@ -283,32 +283,47 @@ input:checked + .slider:before {
   border-radius: 8px;
 }
 
-/* Neuro character in bottom-right corner */
+/* Neuro character in bottom-right corner
+   The container (#neuro-corner) is used for spinning (rotation).
+   The inner image (#neuro-corner img) is used for bobbing (translateY).
+   Separating them avoids transform conflicts between rotation and translate. */
 #neuro-corner {
   position: fixed;
   bottom: 10px;
   right: 10px;
-  width: 96px;
-  image-rendering: pixelated;
   z-index: 1000;
-  filter: drop-shadow(0 0 4px #ff66cc);
+  /* container doesn't size the image directly */
 }
 
-/* Bobbing animation when Neuro is talking */
-#neuro-corner.talking {
+#neuro-corner img {
+  width: 96px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 4px #ff66cc);
+  display: block;
+}
+
+/* Continuous rotation on the wrapper */
+#neuro-corner.spinning {
+  animation: neuro-spin 4s linear infinite;
+}
+
+/* When talking, run the bobbing animation on the inner image while the wrapper spins */
+#neuro-corner.spinning.talking img {
+  animation: neuro-bob 0.4s ease-in-out infinite;
+}
+
+/* Fallback: if only talking is applied (no spinning), bob the image */
+#neuro-corner.talking img {
   animation: neuro-bob 0.4s ease-in-out infinite !important;
 }
 
-/* Animation that makes Neuro bounce up and down when speaking */
 @keyframes neuro-bob {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
 }
 
+@keyframes neuro-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

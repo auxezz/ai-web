@@ -14,11 +14,20 @@
       // lazy audio context (created on first sound to avoid autoplay issues)
       this._audioCtx = null;
       // start spinning by default so Neuro slowly rotates
-      this.startSpinning();
+      try {
+        this.startSpinning();
+      } catch (e) {
+        console.warn('NeuroSpin.startSpinning failed', e);
+      }
     },
 
     startSpinning() {
-      if (this._neuroEl) this._neuroEl.classList.add('spinning');
+      if (this._neuroEl) {
+        this._neuroEl.classList.add('spinning');
+        console.debug('NeuroSpin: started spinning on', this._neuroEl);
+      } else {
+        console.debug('NeuroSpin: startSpinning called but no element');
+      }
     },
 
     stopSpinning() {
@@ -50,14 +59,24 @@
     },
 
     startTalking(beepIntervalMs = 100) {
-      if (this._neuroEl) this._neuroEl.classList.add('talking');
+      if (!this._neuroEl) return;
+      // If Neuro was spinning, remember that and stop spinning while talking
+      this._wasSpinning = this._neuroEl.classList.contains('spinning');
+      if (this._wasSpinning) this._neuroEl.classList.remove('spinning');
+      this._neuroEl.classList.add('talking');
       // start interval for beeps
       if (this._typingInterval) return; // already running
       this._typingInterval = setInterval(() => this.playBeep(), beepIntervalMs);
     },
 
     stopTalking() {
-      if (this._neuroEl) this._neuroEl.classList.remove('talking');
+      if (!this._neuroEl) return;
+      this._neuroEl.classList.remove('talking');
+      // restore spinning state if it was spinning before talking
+      if (this._wasSpinning) {
+        this._neuroEl.classList.add('spinning');
+        this._wasSpinning = false;
+      }
       if (this._typingInterval) {
         clearInterval(this._typingInterval);
         this._typingInterval = null;
