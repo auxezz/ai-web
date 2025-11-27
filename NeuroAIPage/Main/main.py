@@ -8,13 +8,16 @@ import google.generativeai as genai
 from google.api_core.exceptions import GoogleAPICallError
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Serve the parent directory (NeuroAIPage) as the static folder so
+# sibling folders like Background/ and NeuroSpin/ are reachable
+ROOT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
 
 MODEL_PATH = os.path.join(SCRIPT_DIR, "../LLM/gemma2-9b-neuro-sama-q4_k_m.gguf")
-MEMORY_FILE = os.path.join(SCRIPT_DIR, "../Memory/memory.json")
-PROMPT_FILE = os.path.join(SCRIPT_DIR, "../Memory/prompt.json")
+MEMORY_FILE = os.path.join(SCRIPT_DIR, "memory.json")
+PROMPT_FILE = os.path.join(SCRIPT_DIR, "../Configs/prompt.json")
 CONFIG_FILE = os.path.join(SCRIPT_DIR, "../Configs/config.json")
 
-app = Flask(__name__, static_folder=SCRIPT_DIR, static_url_path='')
+app = Flask(__name__, static_folder=ROOT_DIR, static_url_path='')
 CORS(app)  
 
 
@@ -102,7 +105,8 @@ else:
 
 @app.route("/")
 def index():
-    return app.send_static_file('index.html')
+    # Neuro.html is inside the Main/ subfolder under the static root
+    return app.send_static_file('Main/Neuro.html')
 
 @app.route("/ping", methods=["GET"])
 def ping():
